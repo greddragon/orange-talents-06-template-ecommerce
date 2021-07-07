@@ -5,10 +5,13 @@ import javax.validation.constraints.NotBlank;
 
 import org.hibernate.validator.constraints.Length;
 
+import br.com.zupacademy.gerson.mercadolivre.validacao.ValorUnico;
+
 public class UsuarioDto {
 
 	@Email
 	@NotBlank
+	@ValorUnico(classe = Usuario.class, value = "email")
 	private String email;
 	@NotBlank
 	@Length(min = 6)
