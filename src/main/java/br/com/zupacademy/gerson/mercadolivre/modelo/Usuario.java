@@ -1,4 +1,4 @@
-package br.com.zupacademy.gerson.mercadolivre.controller;
+package br.com.zupacademy.gerson.mercadolivre.modelo;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

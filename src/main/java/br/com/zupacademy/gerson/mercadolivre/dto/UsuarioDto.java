@@ -1,10 +1,11 @@
-package br.com.zupacademy.gerson.mercadolivre.controller;
+package br.com.zupacademy.gerson.mercadolivre.dto;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 import org.hibernate.validator.constraints.Length;
 
+import br.com.zupacademy.gerson.mercadolivre.modelo.Usuario;
 import br.com.zupacademy.gerson.mercadolivre.validacao.ValorUnico;
 
 public class UsuarioDto {

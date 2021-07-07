@@ -11,21 +11,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.zupacademy.gerson.mercadolivre.dto.UsuarioDto;
-import br.com.zupacademy.gerson.mercadolivre.modelo.Usuario;
+import br.com.zupacademy.gerson.mercadolivre.dto.CategoriaDto;
+import br.com.zupacademy.gerson.mercadolivre.modelo.Categoria;
 
 @RestController
-@RequestMapping("/usuario")
-public class UsuarioController {
-	
+@RequestMapping("/categoria")
+public class CategoriaController {
+
 	@PersistenceContext
 	EntityManager em;
-	
-	@PostMapping(value = "/novo-cadastro")
+
+	@PostMapping(value = ("/cadastro"))
 	@Transactional
-	public ResponseEntity<?> Cadastro(@RequestBody @Valid UsuarioDto request) {
-		Usuario usuario = request.toUsuario();
-		em.persist(usuario);
+	public ResponseEntity<?> cadastro(@RequestBody @Valid CategoriaDto request) {
+		Categoria categoria = request.toCategoria(em);
+		em.persist(categoria);
 		return ResponseEntity.ok().build();
 	}
 }
