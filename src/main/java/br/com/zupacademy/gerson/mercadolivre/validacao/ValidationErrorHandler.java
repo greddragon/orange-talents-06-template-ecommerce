@@ -1,4 +1,4 @@
-package br.com.zupacademy.gerson.mercadolivre.validadores;
+package br.com.zupacademy.gerson.mercadolivre.validacao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import br.com.zupacademy.gerson.mercadolivre.dto.ErrorDto;
 
-@RestControllerAdvice
+//@RestControllerAdvice
 public class ValidationErrorHandler {
 
 	@Autowired

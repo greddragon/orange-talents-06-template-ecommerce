@@ -29,7 +29,8 @@ public class CategoriaDto {
 	public Categoria toCategoria(EntityManager em) {
 		Categoria c_mae = null;
 		if (id_categoriaMae != null) {
-			c_mae = (Categoria) em.createQuery("SELECT c FROM Categoria c").getSingleResult();
+			//(Categoria) em.createQuery("SELECT c FROM Categoria c").getSingleResult();
+			c_mae = em.find(Categoria.class, id_categoriaMae);
 		}
 
 		return new Categoria(nome, c_mae);

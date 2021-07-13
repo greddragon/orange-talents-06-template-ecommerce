@@ -21,7 +21,7 @@ public class UsuarioController {
 	@PersistenceContext
 	EntityManager em;
 	
-	@PostMapping(value = "/novo-cadastro")
+	@PostMapping("/novo-cadastro")
 	@Transactional
 	public ResponseEntity<?> Cadastro(@RequestBody @Valid UsuarioDto request) {
 		Usuario usuario = request.toUsuario();
