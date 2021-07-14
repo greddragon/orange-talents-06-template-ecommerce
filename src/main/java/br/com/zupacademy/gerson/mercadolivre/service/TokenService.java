@@ -37,12 +37,13 @@ public class TokenService {
 	public boolean isValid(String token) {
 		
 		try {
-			Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
+			Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token);
 			return true;
-			
 		} catch (Exception e) {
+			// TODO: handle exception
 			return false;
 		}
+
 	}
 
 	public Long getIdToken(String token) {
