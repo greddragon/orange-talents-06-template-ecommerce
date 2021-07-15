@@ -4,12 +4,14 @@ import javax.persistence.EntityManager;
 import javax.validation.constraints.NotBlank;
 
 import br.com.zupacademy.gerson.mercadolivre.modelo.Categoria;
+import br.com.zupacademy.gerson.mercadolivre.validacao.ExisteId;
 import br.com.zupacademy.gerson.mercadolivre.validacao.ValorUnico;
 
 public class CategoriaDto {
 	@NotBlank
 	@ValorUnico(classe = Categoria.class, value = "nome")
 	private String nome;
+	@ExisteId(classe = Categoria.class, value = "id")
 	private Long id_categoriaMae;
 
 	public CategoriaDto(@NotBlank String nome, Long id_categoriaMae) {
@@ -29,7 +31,6 @@ public class CategoriaDto {
 	public Categoria toCategoria(EntityManager em) {
 		Categoria c_mae = null;
 		if (id_categoriaMae != null) {
-			//(Categoria) em.createQuery("SELECT c FROM Categoria c").getSingleResult();
 			c_mae = em.find(Categoria.class, id_categoriaMae);
 		}
 
