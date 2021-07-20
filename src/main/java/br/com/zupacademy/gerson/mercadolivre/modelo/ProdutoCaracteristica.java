@@ -22,8 +22,10 @@ public class ProdutoCaracteristica {
 	private Produto produto;
 
 
-
-
+	@Deprecated
+	public ProdutoCaracteristica() {
+		
+	}
 
 	public ProdutoCaracteristica(@NotBlank String nome, @NotBlank String descricao, Produto produto) {
 		super();

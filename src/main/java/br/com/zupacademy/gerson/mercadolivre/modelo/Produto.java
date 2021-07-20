@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -46,9 +47,14 @@ public class Produto {
 	@ManyToOne
 	private Usuario usuario;
 
-	@OneToMany(mappedBy = "produto", cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "produto", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
 	private List<ProdutoCaracteristica> caracteristicas = new ArrayList<>();
+	
+	@Deprecated
+	public Produto() {
 
+	}
+	
 	public Produto(@NotBlank String nome, @NotNull @Positive BigDecimal valor, @NotNull @Positive int quantidade,
 			@NotBlank @Length(max = 1000) String descricao, Categoria categoria, Usuario usuario,
 			Collection<ProdutoCaracteristicasDto> caracteristicas) {
