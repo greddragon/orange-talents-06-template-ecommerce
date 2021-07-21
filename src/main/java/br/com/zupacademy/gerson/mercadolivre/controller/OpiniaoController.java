@@ -30,7 +30,7 @@ public class OpiniaoController {
 
 	@PostMapping("/{id}/cadastro")
 	@Transactional
-	public ResponseEntity<?> cadastrarOpiniao(@PathVariable Long id, @RequestBody @Valid opiniaoDto opiniaoDto,
+	public ResponseEntity<?> cadastrarOpiniao(@PathVariable("id") Long id, @RequestBody @Valid opiniaoDto opiniaoDto,
 			HttpServletRequest request) {
 
 		Opiniao opiniao = opiniaoDto.getOpiniao(id, request, em, tokenService);
