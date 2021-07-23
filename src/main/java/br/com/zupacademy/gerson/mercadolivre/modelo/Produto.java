@@ -3,7 +3,9 @@ package br.com.zupacademy.gerson.mercadolivre.modelo;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
@@ -49,6 +51,9 @@ public class Produto {
 
 	@OneToMany(mappedBy = "produto", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
 	private List<ProdutoCaracteristica> caracteristicas = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
+	private Set<ProdutoImagem> imagens = new HashSet<>();
 	
 	@Deprecated
 	public Produto() {
@@ -99,6 +104,14 @@ public class Produto {
 
 	public List<ProdutoCaracteristica> getCaracteristicas() {
 		return caracteristicas;
+	}
+
+
+	public void AssociaImagens(Set<String> links) {
+		
+		Set<ProdutoImagem> imagens = links.stream().map(link -> new ProdutoImagem(this, link)).collect(Collectors.toSet());
+		
+		this.imagens.addAll(imagens);
 	}
 
 }
