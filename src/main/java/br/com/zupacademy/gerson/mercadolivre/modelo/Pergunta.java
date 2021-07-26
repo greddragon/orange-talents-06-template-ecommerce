@@ -29,6 +29,10 @@ public class Pergunta {
 	Usuario usuario;
 
 	private LocalDate istante;
+	
+	@Deprecated
+	public Pergunta() {
+	}
 
 	public Pergunta(@NotBlank String titulo, @NotNull Produto produto, @NotNull Usuario usuario) {
 		super();

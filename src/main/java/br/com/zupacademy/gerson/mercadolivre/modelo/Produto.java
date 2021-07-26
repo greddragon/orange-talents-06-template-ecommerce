@@ -1,16 +1,13 @@
 package br.com.zupacademy.gerson.mercadolivre.modelo;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,6 +20,7 @@ import javax.validation.constraints.Positive;
 import org.hibernate.validator.constraints.Length;
 
 import br.com.zupacademy.gerson.mercadolivre.dto.ProdutoCaracteristicasDto;
+import br.com.zupacademy.gerson.mercadolivre.dto.opiniaoDto;
 
 @Entity
 public class Produto {
@@ -49,11 +47,17 @@ public class Produto {
 	@ManyToOne
 	private Usuario usuario;
 
-	@OneToMany(mappedBy = "produto", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-	private List<ProdutoCaracteristica> caracteristicas = new ArrayList<>();
+	@OneToMany(mappedBy = "produto", cascade = CascadeType.PERSIST)
+	private Set<ProdutoCaracteristica> caracteristicas = new HashSet<>();
 	
 	@OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
 	private Set<ProdutoImagem> imagens = new HashSet<>();
+	
+	@OneToMany(mappedBy = "produto")
+	private Set<Pergunta> perguntas = new HashSet<>();
+	
+	@OneToMany(mappedBy = "produto")
+	private Set<Opiniao> opinioes = new HashSet<>();
 	
 	@Deprecated
 	public Produto() {
@@ -71,7 +75,7 @@ public class Produto {
 		this.categoria = categoria;
 		this.usuario = usuario;
 		this.caracteristicas.addAll(caracteristicas.stream()
-				.map(caracteristica -> caracteristica.toCaracteristica(this)).collect(Collectors.toList()));
+				.map(caracteristica -> caracteristica.toCaracteristica(this)).collect(Collectors.toSet()));
 	}
 
 	public Long getId() {
@@ -102,7 +106,7 @@ public class Produto {
 		return usuario;
 	}
 
-	public List<ProdutoCaracteristica> getCaracteristicas() {
+	public Set<ProdutoCaracteristica> getCaracteristicas() {
 		return caracteristicas;
 	}
 
@@ -112,6 +116,29 @@ public class Produto {
 		Set<ProdutoImagem> imagens = links.stream().map(link -> new ProdutoImagem(this, link)).collect(Collectors.toSet());
 		
 		this.imagens.addAll(imagens);
+	}
+
+	public Set<ProdutoCaracteristicasDto> toCaracteristicasDetalhes() {
+		
+		return caracteristicas.stream().map(caracteristica -> 
+				new ProdutoCaracteristicasDto(caracteristica.getNome(), caracteristica.getDescricao()))
+				.collect(Collectors.toSet());
+	}
+
+	public Set<String> toImagensDetalhes() {
+
+		return imagens.stream().map(imagem -> imagem.getLink()).collect(Collectors.toSet());
+	}
+
+	public Set<String> toPerguntasDetalhes() {
+		
+		return perguntas.stream().map(pergunta -> pergunta.getTitulo()).collect(Collectors.toSet());
+	}
+
+	public Set<opiniaoDto> toOpinioesDetalhes() {
+		
+		return opinioes.stream().map(opiniao -> new opiniaoDto(opiniao.getTitulo(), 
+				opiniao.getNota(), opiniao.getDescricao())).collect(Collectors.toSet());
 	}
 
 }
