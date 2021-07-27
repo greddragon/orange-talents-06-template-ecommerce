@@ -141,4 +141,13 @@ public class Produto {
 				opiniao.getNota(), opiniao.getDescricao())).collect(Collectors.toSet());
 	}
 
+	public Boolean AbaterQuantidade(int quantidade2) {
+		
+		if(this.quantidade >= quantidade2) {
+			this.quantidade -= quantidade2;
+			return true;
+		}
+		return false;
+	}
+
 }
