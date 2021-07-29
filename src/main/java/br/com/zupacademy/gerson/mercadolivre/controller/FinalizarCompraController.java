@@ -1,6 +1,5 @@
 package br.com.zupacademy.gerson.mercadolivre.controller;
 
-import java.net.URI;
 import java.net.URISyntaxException;
 
 import javax.persistence.EntityManager;
@@ -8,6 +7,7 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindException;
@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.zupacademy.gerson.mercadolivre.dto.compraDto;
-import br.com.zupacademy.gerson.mercadolivre.enumerated.Gateaway;
 import br.com.zupacademy.gerson.mercadolivre.modelo.Compra;
 import br.com.zupacademy.gerson.mercadolivre.modelo.Produto;
 import br.com.zupacademy.gerson.mercadolivre.modelo.Usuario;
+import br.com.zupacademy.gerson.mercadolivre.service.MontarLink;
 
 @RestController
 @RequestMapping("/compras")
@@ -29,6 +29,8 @@ public class FinalizarCompraController {
 
 	@PersistenceContext
 	EntityManager em;
+	@Autowired
+	private MontarLink montarlink;
 
 	@PostMapping
 	@Transactional
@@ -44,17 +46,8 @@ public class FinalizarCompraController {
 
 			Compra compra = compraDto.toCompra(produto, user);
 			em.persist(compra);
-
-			if (compra.getGateaway().equals(Gateaway.PAYPAL)) {
-
-				String uri = montarURI(uriComponents, compra.getId(), "paypal", "paypal.com");
-				return ResponseEntity.ok().body(uri);
-
-			} else {
-
-				String uri = montarURI(uriComponents, compra.getId(), "pagseguro", "pagseguro.com");
-				return ResponseEntity.ok().body(uri);
-			}
+			String uri = montarlink.uri(compra, uriComponents);
+			return ResponseEntity.ok().body(uri);
 
 		}
 
@@ -63,15 +56,6 @@ public class FinalizarCompraController {
 
 		throw semEstoque;
 
-	}
-
-	private String montarURI(UriComponentsBuilder uriComponents, Long id, String gateaway, String siteGateaway)
-			throws URISyntaxException {
-
-		String path = uriComponents.path("app-pagamento-" + gateaway + "/{id}").buildAndExpand(id).toString();
-		URI uri = new URI(siteGateaway + "?buyerId=" + id + "&redirectUrl=");
-
-		return uri + path;
 	}
 
 }
